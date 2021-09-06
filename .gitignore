@@ -1,4 +1,6 @@
 /venv/
 /.idea/
-__pycache__
+__pycache__/
 *.sqlite3
+/hw1_nginx_template/
+/stocks_products/static/

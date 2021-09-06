@@ -1,0 +1,4 @@
+CREATE USER james WITH PASSWORD '1234567890';
+
+CREATE DATABASE crud_test_docker;
+GRANT ALL PRIVILEGES ON DATABASE crud_test_docker TO james;

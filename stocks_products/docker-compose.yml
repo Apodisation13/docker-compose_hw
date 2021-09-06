@@ -1,0 +1,42 @@
+version: "3"
+
+
+services:
+  postgresdb:
+    image: stocks_products_postgresdb
+    build:
+      context: ./docker/postgres
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_PASSWORD=1234567890
+    volumes:
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5433:5432"
+
+  backend:
+    image: stocks_products_backend
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/stocks_products  # TODO: вот эта строчка отвечает за автообновление после изменения кода?
+    depends_on:
+      - postgresdb
+    ports:
+      - "8000:8000"
+
+  nginx:
+    image: stocks_products_nginx
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+      - postgresdb
+    volumes:
+      - ./static/:/static
+#    links:
+#      - backend
